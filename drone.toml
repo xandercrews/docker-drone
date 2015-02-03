@@ -1,0 +1,21 @@
+[server]
+port="${DRONE_SERVER_PORT}"
+
+[registration]
+open=false
+
+[gitlab]
+url="http://${GITLAB_PORT_80_TCP_ADDR}:${GITLAB_PORT_80_TCP_PORT}"
+secret="${DRONE_SERVER_SECRET}"
+
+[database]
+driver="postgres"
+datasource="host=${POSTGRESQL_PORT_5432_TCP_ADDR} user=drone dbname=drone sslmode=disable"
+
+[worker]
+nodes=[
+"unix:///var/run/docker.sock",
+"unix:///var/run/docker.sock"
+]
+
+# vim: set ts=2 sw=2 expandtab:
