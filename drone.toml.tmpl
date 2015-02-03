@@ -1,16 +1,14 @@
 [server]
-port="${DRONE_SERVER_PORT}"
-
-[registration]
-open=false
+port="0.0.0.0:${DRONE_SERVER_PORT}"
 
 [gitlab]
 url="http://${GITLAB_PORT_80_TCP_ADDR}:${GITLAB_PORT_80_TCP_PORT}"
+client="${DRONE_GITLAB_CLIENT}"
 secret="${DRONE_GITLAB_SECRET}"
 
 [database]
 driver="postgres"
-datasource="host=${POSTGRESQL_PORT_5432_TCP_ADDR} user=drone dbname=drone sslmode=disable"
+datasource="host=${POSTGRESQL_PORT_5432_TCP_ADDR} port=${POSTGRESQL_PORT_5432_TCP_PORT} user=${POSTGRESQL_ENV_DB_USER} password=${POSTGRESQL_ENV_DB_PASS} sslmode=disable"
 
 [worker]
 nodes=[

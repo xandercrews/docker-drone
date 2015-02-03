@@ -2,6 +2,8 @@ FROM centos:centos7
 MAINTAINER no one
 
 # Install real systemd
+ENV container docker
+
 RUN yum -y swap -- remove fakesystemd -- install systemd systemd-libs; \ 
     yum -y update; \ 
     yum clean all; \
@@ -17,12 +19,20 @@ RUN yum -y swap -- remove fakesystemd -- install systemd systemd-libs; \
 VOLUME [ "/sys/fs/cgroup" ]
 
 # Install Drone
-RUN rpm -ivh http://downloads.drone.io/master/drone.rpm
+RUN rpm -ivh http://downloads.drone.io/master/drone.rpm && \ 
+    mv /etc/drone/drone.toml{,.sample}
 
 RUN systemctl enable drone
 
-VOLUME [ "/etc/drone" ]
+# Install start wrapper deps
+RUN rpm -iUvh http://yum.postgresql.org/9.3/redhat/rhel-7-x86_64/pgdg-centos93-9.3-1.noarch.rpm && \
+    yum -y update && \ 
+    yum -y install --disablerepo=* --enablerepo=pgdg93 postgresql93 && \
+    yum -y install perl && \
+    yum clean all
 
+# Install start wrapper
 ADD start.sh /bin/
 RUN chmod ug+rx /bin/start.sh
+
 CMD [ "/bin/start.sh" ]
