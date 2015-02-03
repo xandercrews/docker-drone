@@ -19,7 +19,10 @@ VOLUME [ "/sys/fs/cgroup" ]
 # Install Drone
 RUN rpm -ivh http://downloads.drone.io/master/drone.rpm
 
+RUN systemctl enable drone
+
 VOLUME [ "/etc/drone" ]
 
-# CMD [ "droned", "--config=/etc/drone/drone.toml" ]
-CMD [ "/usr/sbin/init" ]
+ADD start.sh /bin/
+RUN chmod ug+rx /bin/start.sh
+CMD [ "/bin/start.sh" ]
