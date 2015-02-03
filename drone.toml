@@ -6,7 +6,7 @@ open=false
 
 [gitlab]
 url="http://${GITLAB_PORT_80_TCP_ADDR}:${GITLAB_PORT_80_TCP_PORT}"
-secret="${DRONE_SERVER_SECRET}"
+secret="${DRONE_GITLAB_SECRET}"
 
 [database]
 driver="postgres"
